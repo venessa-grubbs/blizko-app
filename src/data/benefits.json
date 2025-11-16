@@ -1,0 +1,30 @@
+{
+  "benefits": [
+    {
+      "id": "pens-transport-2025",
+      "title": "Бесплатный проезд на общественном транспорте",
+      "type": "federal",
+      "target_groups": ["pensioner", "disabled"],
+      "region": ["all"],
+      "valid_from": "2025-01-01",
+      "valid_to": "2025-12-31",
+      "requirements": "Наличие удостоверения льготника",
+      "how_to_get": "Обратиться в МФЦ с паспортом и удостоверением",
+      "source_url": "https://mintrud.gov.ru/",
+      "partner": null
+    },
+    {
+      "id": "medicines-discount",
+      "title": "Скидка 10% в аптеках 'Здоровье'",
+      "type": "commercial",
+      "target_groups": ["pensioner", "disabled", "large_family"],
+      "region": ["77", "54"],
+      "valid_from": "2024-01-01",
+      "valid_to": "2024-12-31",
+      "requirements": "Предъявление соц. карты или удостоверения",
+      "how_to_get": "Предъявить документ в любой аптеке сети",
+      "source_url": null,
+      "partner": "Аптеки 'Здоровье'"
+    }
+  ]
+}
