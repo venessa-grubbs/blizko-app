@@ -1,106 +1,98 @@
 import React from 'react'
-import { Container, Typography, Paper, Grid, Card, CardContent, Button, Box } from '@mui/material'
-import { Link } from 'react-router-dom'
+import './Home.css'
+
+const sections = [
+  {
+    id: 'partners',
+    title: 'Акции и скидки от партнеров',
+    viewAll: true,
+    cards: 3,
+    variant: 'square'
+  },
+  {
+    id: 'regional',
+    title: 'Региональные льготы',
+    viewAll: true,
+    cards: 3,
+    variant: 'wide'
+  },
+  {
+    id: 'federal',
+    title: 'Федеральные льготы',
+    viewAll: true,
+    cards: 4,
+    variant: 'square'
+  }
+]
 
 function Home() {
-  const features = [
-    {
-      title: "📋 Каталог льгот",
-      description: "Полная база государственных и коммерческих льгот с фильтрами и поиском",
-      link: "/catalog",
-      buttonText: "Найти льготы"
-    },
-    {
-      title: "👤 Личный кабинет",
-      description: "Персональные рекомендации и управление вашими льготами",
-      link: "/dashboard", 
-      buttonText: "Войти в кабинет"
-    },
-    {
-      title: "🎯 Для кого",
-      description: "Пенсионеры, инвалиды, многодетные семьи, малоимущие и другие категории",
-      link: "/catalog",
-      buttonText: "Узнать больше"
-    }
-  ]
+  const handleSearchSubmit = (event) => {
+    event.preventDefault()
+  }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      {/* Герой секция */}
-      <Paper sx={{ p: 5, mb: 6, textAlign: 'center', background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)', color: 'white' }}>
-        <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
-          Социальные льготы для всех
-        </Typography>
-        <Typography variant="h6" sx={{ mb: 4, opacity: 0.9 }}>
-          Найдите подходящие льготы, субсидии и скидки от государства и коммерческих организаций
-        </Typography>
-        <Button 
-          component={Link} 
-          to="/catalog" 
-          variant="contained" 
-          size="large"
-          sx={{ 
-            bgcolor: 'white', 
-            color: '#1976d2',
-            '&:hover': {
-              bgcolor: '#f5f5f5'
-            }
-          }}
-        >
-          Начать поиск льгот
-        </Button>
-      </Paper>
+    <div className="home">
+      <section className="home-hero">
+        <div className="home-meta">
+          <span>Москва · сегодня</span>
+        </div>
+        <h1 className="home-title">Подберём льготы под вашу ситуацию</h1>
+        <p className="home-description">
+          Используйте поиск, чтобы найти конкретную услугу или организацию. Все результаты обновляются ежедневно.
+        </p>
 
-      {/* Особенности */}
-      <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ mb: 4 }}>
-        Почему выбирают нас
-      </Typography>
-      
-      <Grid container spacing={4}>
-        {features.map((feature, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
-                <Typography variant="h5" component="h3" gutterBottom>
-                  {feature.title}
-                </Typography>
-                <Typography variant="body1" color="text.secondary" paragraph>
-                  {feature.description}
-                </Typography>
-                <Box sx={{ mt: 'auto' }}>
-                  <Button 
-                    component={Link} 
-                    to={feature.link}
-                    variant="outlined" 
-                    fullWidth
-                  >
-                    {feature.buttonText}
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+        <form className="home-search" role="search" onSubmit={handleSearchSubmit}>
+          <input type="search" placeholder="Поиск по ключевому слову" aria-label="Поиск по льготам" />
+          <button type="submit" aria-label="Найти">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <circle cx="9" cy="9" r="5.5" />
+              <path d="m13 13 4 4" />
+            </svg>
+          </button>
+        </form>
 
-      {/* Категории льготников */}
-      <Box sx={{ mt: 6, p: 4, bgcolor: 'background.default', borderRadius: 2 }}>
-        <Typography variant="h5" component="h3" gutterBottom align="center">
-          Для кого предназначены льготы
-        </Typography>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
-          {['Пенсионеры', 'Инвалиды', 'Многодетные семьи', 'Малоимущие', 'Ветераны', 'Студенты'].map((category) => (
-            <Grid item xs={6} sm={4} md={2} key={category}>
-              <Paper sx={{ p: 2, textAlign: 'center' }}>
-                <Typography variant="body2" fontWeight="medium">
-                  {category}
-                </Typography>
-              </Paper>
-            </Grid>
+        <div className="home-shortcuts">
+          {['Пенсионеры', 'Инвалиды', 'Многодетные', 'Малоимущие'].map((item) => (
+            <button key={item} type="button" className="shortcut-chip">
+              {item}
+            </button>
           ))}
-        </Grid>
-      </Box>
-    </Container>
+        </div>
+      </section>
+
+      <section className="home-banner">
+        <div>
+          <p className="banner-eyebrow">Новые данные</p>
+          <h2>193 льготы доступны в Москве</h2>
+          <p>Проверьте региональные программы и скидки от крупных партнеров.</p>
+        </div>
+        <button type="button" className="banner-button">
+          Смотреть обновления
+        </button>
+      </section>
+
+      {sections.map((section) => (
+        <section key={section.id} className="benefits-section">
+          <header>
+            <h3>{section.title}</h3>
+            {section.viewAll && <button type="button">посмотреть все</button>}
+          </header>
+
+          <div className={`benefits-grid benefits-grid--${section.variant}`}>
+            {Array.from({ length: section.cards }).map((_, index) => (
+              <article key={index} className="benefit-card">
+                <div className="card-placeholder" />
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <section className="home-footnote">
+        <p>Прототип «Близко» · версии для мобильных устройств и десктопа.</p>
+        <p>Данные обновляются автоматически и синхронизируются с ЕПГУ.</p>
+      </section>
+    </div>
   )
 }
 

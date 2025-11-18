@@ -1,53 +1,75 @@
 import React from 'react'
-import { FormControl, InputLabel, Select, MenuItem, Chip, Box } from '@mui/material'
+
+const typeOptions = [
+  { value: 'all', label: 'Все типы' },
+  { value: 'federal', label: 'Федеральные' },
+  { value: 'commercial', label: 'Коммерческие' }
+]
+
+const categoryOptions = [
+  { value: 'all', label: 'Все категории' },
+  { value: 'pensioner', label: 'Пенсионеры' },
+  { value: 'disabled', label: 'Инвалиды' },
+  { value: 'large_family', label: 'Многодетные' },
+  { value: 'low_income', label: 'Малоимущие' }
+]
 
 function Filters({ filters, onFiltersChange }) {
+  const handleReset = (key) => {
+    onFiltersChange({ ...filters, [key]: 'all' })
+  }
+
   return (
-    <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-      <FormControl sx={{ minWidth: 200 }}>
-        <InputLabel>Тип льготы</InputLabel>
-        <Select
+    <div className="filters-group">
+      <div className="filter-control">
+        <label htmlFor="benefit-type">Тип льготы</label>
+        <select
+          id="benefit-type"
           value={filters.type}
-          label="Тип льготы"
-          onChange={(e) => onFiltersChange({ ...filters, type: e.target.value })}
+          onChange={(event) => onFiltersChange({ ...filters, type: event.target.value })}
         >
-          <MenuItem value="all">Все типы</MenuItem>
-          <MenuItem value="federal">Федеральные</MenuItem>
-          <MenuItem value="commercial">Коммерческие</MenuItem>
-        </Select>
-      </FormControl>
+          {typeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <FormControl sx={{ minWidth: 200 }}>
-        <InputLabel>Категория</InputLabel>
-        <Select
+      <div className="filter-control">
+        <label htmlFor="benefit-category">Категория</label>
+        <select
+          id="benefit-category"
           value={filters.category}
-          label="Категория"
-          onChange={(e) => onFiltersChange({ ...filters, category: e.target.value })}
+          onChange={(event) => onFiltersChange({ ...filters, category: event.target.value })}
         >
-          <MenuItem value="all">Все категории</MenuItem>
-          <MenuItem value="pensioner">Пенсионеры</MenuItem>
-          <MenuItem value="disabled">Инвалиды</MenuItem>
-          <MenuItem value="large_family">Многодетные</MenuItem>
-          <MenuItem value="low_income">Малоимущие</MenuItem>
-        </Select>
-      </FormControl>
+          {categoryOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      {/* Чипы активных фильтров */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <div className="filter-pills">
         {filters.type !== 'all' && (
-          <Chip 
-            label={`Тип: ${filters.type}`} 
-            onDelete={() => onFiltersChange({ ...filters, type: 'all' })}
-          />
+          <span className="chip">
+            Тип: {typeOptions.find((item) => item.value === filters.type)?.label}
+            <button type="button" aria-label="Сбросить фильтр по типу" onClick={() => handleReset('type')}>
+              ×
+            </button>
+          </span>
         )}
         {filters.category !== 'all' && (
-          <Chip 
-            label={`Категория: ${filters.category}`} 
-            onDelete={() => onFiltersChange({ ...filters, category: 'all' })}
-          />
+          <span className="chip">
+            Категория: {categoryOptions.find((item) => item.value === filters.category)?.label}
+            <button type="button" aria-label="Сбросить фильтр по категории" onClick={() => handleReset('category')}>
+              ×
+            </button>
+          </span>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 

@@ -1,144 +1,121 @@
 import React from 'react'
-import { Container, Typography, Paper, Grid, Card, CardContent, Button, Chip, Box, Alert } from '@mui/material'
-import { Link } from 'react-router-dom'
-import { useAuth } from '../utils/AuthContext'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../utils/useAuth'
 import benefitsData from '../data/benefits.json'
+import BenefitsList from '../components/benefits/BenefitsList'
+import './Dashboard.css'
+
+const categoryLabels = {
+  pensioner: 'Пенсионер',
+  disabled_1: 'Инвалид I группы',
+  disabled_2: 'Инвалид II группы',
+  disabled_3: 'Инвалид III группы',
+  large_family: 'Многодетный родитель',
+  veteran: 'Ветеран',
+  low_income: 'Малоимущий'
+}
+
+const regionLabels = {
+  '77': 'Москва',
+  '78': 'Санкт-Петербург',
+  '54': 'Новосибирская область',
+  '63': 'Самарская область',
+  '52': 'Нижегородская область'
+}
 
 function Dashboard() {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
 
   if (!user) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Alert severity="warning">
-          Для доступа к личному кабинету необходимо войти в систему
-        </Alert>
-        <Button 
-          component={Link} 
-          to="/login" 
-          variant="contained" 
-          sx={{ mt: 2 }}
-        >
-          Войти
-        </Button>
-      </Container>
+      <div className="page dashboard-page">
+        <section className="page-card empty-dashboard">
+          <div className="pill pill--warning">Только для авторизованных</div>
+          <h1>Войдите в личный кабинет</h1>
+          <p>Здесь появятся персональные рекомендации, когда вы авторизуетесь.</p>
+          <Link to="/login" className="primary-button">
+            Войти
+          </Link>
+        </section>
+      </div>
     )
   }
 
-  // Фильтруем льготы по категории пользователя и региону
-  const userBenefits = benefitsData.benefits.filter(benefit =>
-    benefit.target_groups.some(group => group.includes(user.category.split('_')[0])) &&
-    (benefit.region.includes('all') || benefit.region.includes(user.region))
+  const userBenefits = benefitsData.benefits.filter(
+    (benefit) =>
+      benefit.target_groups.some((group) => group.includes(user.category.split('_')[0])) &&
+      (benefit.region.includes('all') || benefit.region.includes(user.region))
   )
 
-  const getCategoryLabel = (category) => {
-    const labels = {
-      pensioner: 'Пенсионер',
-      disabled_1: 'Инвалид I группы',
-      disabled_2: 'Инвалид II группы', 
-      disabled_3: 'Инвалид III группы',
-      large_family: 'Многодетный родитель',
-      veteran: 'Ветеран',
-      low_income: 'Малоимущий'
-    }
-    return labels[category] || category
-  }
-
-  const getRegionLabel = (region) => {
-    const regions = {
-      '77': 'Москва',
-      '78': 'Санкт-Петербург',
-      '54': 'Новосибирская область',
-      '63': 'Самарская область',
-      '52': 'Нижегородская область'
-    }
-    return regions[region] || region
-  }
-
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        👤 Личный кабинет
-      </Typography>
+    <div className="page dashboard-page">
+      <section className="page-card profile-card">
+        <div className="page-header">
+          <div className="pill pill--highlight">Ваш профиль</div>
+          <h1>{user.name}</h1>
+          <p>
+            {categoryLabels[user.category] || user.category} ·{' '}
+            {regionLabels[user.region] || user.region}
+          </p>
+        </div>
 
-      {/* Информация о пользователе */}
-      <Paper sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h6" gutterBottom>Ваш профиль</Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Typography><strong>Имя:</strong> {user.name}</Typography>
-            <Typography><strong>Email:</strong> {user.email}</Typography>
-            {user.phone && <Typography><strong>Телефон:</strong> {user.phone}</Typography>}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography><strong>Категория:</strong> {getCategoryLabel(user.category)}</Typography>
-            <Typography><strong>Регион:</strong> {getRegionLabel(user.region)}</Typography>
-            {user.snils && <Typography><strong>СНИЛС:</strong> {user.snils}</Typography>}
-            <Chip 
-              label={user.isVerified ? '✅ Статус подтвержден' : '⏳ Ожидает проверки'} 
-              color={user.isVerified ? 'success' : 'warning'}
-              size="small"
-              sx={{ mt: 1 }}
-            />
-          </Grid>
-        </Grid>
-      </Paper>
+        <div className="profile-grid">
+          <dl>
+            <dt>Email</dt>
+            <dd>{user.email}</dd>
+          </dl>
+          {user.phone && (
+            <dl>
+              <dt>Телефон</dt>
+              <dd>{user.phone}</dd>
+            </dl>
+          )}
+          {user.snils && (
+            <dl>
+              <dt>СНИЛС</dt>
+              <dd>{user.snils}</dd>
+            </dl>
+          )}
+        </div>
 
-      {/* Рекомендованные льготы */}
-      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5">🎯 Персональные рекомендации</Typography>
-        <Button component={Link} to="/catalog" variant="outlined">
-          Все льготы
-        </Button>
-      </Box>
+        <div className="profile-status">
+          <span className={user.isVerified ? 'pill pill--success' : 'pill pill--warning'}>
+            {user.isVerified ? 'Статус подтвержден' : 'Ожидает проверки'}
+          </span>
+          <div className="profile-actions">
+            <Link to="/catalog" className="ghost-button">
+              Все льготы
+            </Link>
+            <button type="button" className="ghost-button danger" onClick={handleLogout}>
+              Выйти
+            </button>
+          </div>
+        </div>
+      </section>
 
-      {userBenefits.length > 0 ? (
-        <Grid container spacing={3}>
-          {userBenefits.slice(0, 6).map(benefit => (
-            <Grid item xs={12} sm={6} md={4} key={benefit.id}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom sx={{ fontSize: '1.1rem' }}>
-                    {benefit.title}
-                  </Typography>
-                  <Box sx={{ mb: 1 }}>
-                    <Chip 
-                      label={benefit.type === 'federal' ? 'Федеральная' : 'Коммерческая'} 
-                      color={benefit.type === 'federal' ? 'primary' : 'secondary'}
-                      size="small"
-                    />
-                  </Box>
-                  <Typography variant="body2" color="text.secondary" paragraph sx={{ minHeight: '60px' }}>
-                    {benefit.requirements}
-                  </Typography>
-                  <Typography variant="caption" display="block" sx={{ mb: 1 }}>
-                    📅 Срок: {benefit.valid_from} - {benefit.valid_to}
-                  </Typography>
-                  <Button 
-                    component={Link} 
-                    to={`/benefit/${benefit.id}`}
-                    variant="contained" 
-                    size="small"
-                    fullWidth
-                  >
-                    Подробнее
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Paper sx={{ p: 3, textAlign: 'center' }}>
-          <Typography color="text.secondary" gutterBottom>
-            Для вашей категории и региона пока нет рекомендованных льгот
-          </Typography>
-          <Button component={Link} to="/catalog" variant="contained" sx={{ mt: 2 }}>
-            Посмотреть все доступные льготы
-          </Button>
-        </Paper>
-      )}
-    </Container>
+      <section className="page-card">
+        <header className="section-heading">
+          <div>
+            <p className="section-eyebrow">Персональные рекомендации</p>
+            <h2>Льготы для вас</h2>
+          </div>
+          <span>{userBenefits.length} программ найдено</span>
+        </header>
+        {userBenefits.length > 0 ? (
+          <BenefitsList benefits={userBenefits.slice(0, 6)} />
+        ) : (
+          <div className="empty-state">
+            Для вашей категории и региона пока нет рекомендаций. Попробуйте открыть каталог.
+          </div>
+        )}
+      </section>
+    </div>
   )
 }
 

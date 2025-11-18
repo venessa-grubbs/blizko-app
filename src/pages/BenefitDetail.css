@@ -1,0 +1,31 @@
+.benefit-page {
+  gap: 1.5rem;
+}
+
+.back-link {
+  width: fit-content;
+}
+
+.benefit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.benefit-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.benefit-column h3 {
+  margin: 0;
+}
+

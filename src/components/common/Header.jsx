@@ -1,80 +1,75 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Button, Box, Chip } from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../utils/AuthContext'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../utils/useAuth'
+
+const pageTitles = {
+  '/': 'Главная',
+  '/catalog': 'Каталог льгот',
+  '/dashboard': 'Личный кабинет',
+  '/login': 'Войти',
+  '/benefit': 'Льгота'
+}
 
 function Header() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
+  const location = useLocation()
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    logout()
-    navigate('/')
-  }
+  const currentTitle =
+    pageTitles[location.pathname] ||
+    (location.pathname.startsWith('/benefit') ? pageTitles['/benefit'] : 'Близко')
 
-  const getCategoryLabel = (category) => {
-    const labels = {
-      pensioner: 'Пенсионер',
-      disabled_1: 'Инвалид I гр.',
-      disabled_2: 'Инвалид II гр.',
-      disabled_3: 'Инвалид III гр.',
-      large_family: 'Многодетный',
-      veteran: 'Ветеран',
-      low_income: 'Малоимущий'
+  const subtitle =
+    location.pathname === '/'
+      ? 'Все социальные льготы рядом'
+      : 'Прототип сервиса «Близко»'
+
+  const handleBack = () => {
+    if (location.pathname !== '/') {
+      navigate(-1)
     }
-    return labels[category] || category
   }
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography 
-          variant="h6" 
-          component={Link} 
-          to="/"
-          sx={{ 
-            flexGrow: 1, 
-            fontWeight: 'bold', 
-            textDecoration: 'none', 
-            color: 'inherit' 
-          }}
+    <header className="app-header">
+      <div className="header-left">
+        <button
+          type="button"
+          className="icon-button"
+          aria-label="Назад"
+          disabled={location.pathname === '/'}
+          onClick={handleBack}
         >
-          🤝 Социальные льготы
-        </Typography>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="m14.5 6-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Button color="inherit" component={Link} to="/">
-            Главная
-          </Button>
-          <Button color="inherit" component={Link} to="/catalog">
-            Каталог льгот
-          </Button>
-          
-          {user ? (
-            <>
-              <Button color="inherit" component={Link} to="/dashboard">
-                Личный кабинет
-              </Button>
-              <Chip 
-                label={getCategoryLabel(user.category)} 
-                color="secondary" 
-                size="small"
-              />
-              <Typography variant="body2">
-                {user.name}
-              </Typography>
-              <Button color="inherit" onClick={handleLogout}>
-                Выйти
-              </Button>
-            </>
+      <div className="header-center">
+        <span className="header-title">{currentTitle}</span>
+        <span className="header-subtitle">{subtitle}</span>
+      </div>
+
+      <div className="header-right">
+        <button type="button" className="icon-button" aria-label="Открыть уведомления">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M19 17H5l1.5-2.5V10a5.5 5.5 0 0 1 11 0v4.5z" strokeLinecap="round" />
+            <path d="M10 17a2 2 0 0 0 4 0" strokeLinecap="round" />
+          </svg>
+        </button>
+        <Link to={user ? '/dashboard' : '/login'} className="avatar-chip" aria-label="Открыть профиль">
+          {user?.name ? (
+            user.name.charAt(0).toUpperCase()
           ) : (
-            <Button color="inherit" component={Link} to="/login">
-              Войти
-            </Button>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M5 20.5c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5" />
+            </svg>
           )}
-        </Box>
-      </Toolbar>
-    </AppBar>
+        </Link>
+      </div>
+    </header>
   )
 }
 

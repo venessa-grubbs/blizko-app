@@ -1,24 +1,26 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
+import React, { createContext, useState } from 'react'
 
-const AuthContext = createContext()
+const readStoredUser = () => {
+  if (typeof window === 'undefined') return null
+  const savedUser = window.localStorage.getItem('social_benefits_user')
+  if (!savedUser) {
+    return null
+  }
+
+  try {
+    return JSON.parse(savedUser)
+  } catch (error) {
+    console.error('Error parsing saved user:', error)
+    window.localStorage.removeItem('social_benefits_user')
+    return null
+  }
+}
+
+export const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Загрузка пользователя из localStorage при монтировании
-  useEffect(() => {
-    const savedUser = localStorage.getItem('social_benefits_user')
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser))
-      } catch (error) {
-        console.error('Error parsing saved user:', error)
-        localStorage.removeItem('social_benefits_user')
-      }
-    }
-    setIsLoading(false)
-  }, [])
+  const [user, setUser] = useState(() => readStoredUser())
+  const [isLoading, setIsLoading] = useState(false)
 
   // Mock-авторизация через Госуслуги (имитация)
   const loginWithGosuslugi = (userData) => {
@@ -32,7 +34,7 @@ export function AuthProvider({ children }) {
           loginMethod: 'gosuslugi'
         }
         setUser(userWithId)
-        localStorage.setItem('social_benefits_user', JSON.stringify(userWithId))
+        window.localStorage.setItem('social_benefits_user', JSON.stringify(userWithId))
         setIsLoading(false)
         resolve(userWithId)
       }, 1500)
@@ -51,7 +53,7 @@ export function AuthProvider({ children }) {
           loginMethod: 'email'
         }
         setUser(userWithId)
-        localStorage.setItem('social_benefits_user', JSON.stringify(userWithId))
+        window.localStorage.setItem('social_benefits_user', JSON.stringify(userWithId))
         setIsLoading(false)
         resolve(userWithId)
       }, 2000)
@@ -60,7 +62,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem('social_benefits_user')
+    window.localStorage.removeItem('social_benefits_user')
   }
 
   // Mock-проверка статуса льготника через API
@@ -71,6 +73,7 @@ export function AuthProvider({ children }) {
         const isVerified = Math.random() > 0.3 // 70% шанс успешной проверки
         resolve({
           success: isVerified,
+          snils,
           message: isVerified 
             ? 'Статус льготника подтвержден' 
             : 'Требуется дополнительная проверка документов'
@@ -91,12 +94,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   )
-}
-
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
 }
