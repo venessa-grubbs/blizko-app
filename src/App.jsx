@@ -1,0 +1,128 @@
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom'
+import { AuthProvider } from './utils/AuthContext'
+import Header from './components/common/Header'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import Catalog from './pages/Catalog'
+import BenefitDetail from './pages/BenefitDetail'
+import Assistant from './pages/Assistant'
+import Search from './pages/Search'
+import { useAuth } from './utils/useAuth'
+import './App.css'
+
+const IconHome = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+    <path d="M4 9.5 12 4l8 5.5v9.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V9.5Z" />
+    <path d="M9 21V12h6v9" />
+  </svg>
+)
+
+const IconGrid = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+    <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+    <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+  </svg>
+)
+
+const IconAssistant = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+    <rect x="4" y="9" width="16" height="9" rx="2" />
+    <path d="M8 9V5a4 4 0 0 1 8 0v4" />
+    <circle cx="9.5" cy="13.5" r="1" />
+    <circle cx="14.5" cy="13.5" r="1" />
+    <path d="M8 18v2.5M16 18v2.5" strokeLinecap="round" />
+  </svg>
+)
+
+const IconSearch = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="m16 16 4.5 4.5" />
+  </svg>
+)
+
+const IconProfile = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+    <circle cx="12" cy="8" r="4" />
+    <path d="M5 21.5c.7-3.5 3.7-5.5 7-5.5s6.3 2 7 5.5" />
+  </svg>
+)
+
+function BottomNav() {
+  const { user } = useAuth()
+  const profilePath = user ? '/dashboard' : '/login'
+  const [hidden, setHidden] = useState(false)
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY
+    const handleScroll = () => {
+      const current = window.scrollY
+      if (current < lastScrollY - 4) {
+        setHidden(true)
+      } else if (current > lastScrollY + 4) {
+        setHidden(false)
+      }
+      lastScrollY = current
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navItems = [
+    { path: '/', label: 'Главная', icon: IconHome, end: true },
+    { path: '/catalog', label: 'Каталог', icon: IconGrid },
+    { path: '/assistant', label: 'ИИ ассистент', icon: IconAssistant },
+    { path: '/search', label: 'Поиск', icon: IconSearch },
+    { path: profilePath, label: 'Профиль', icon: IconProfile }
+  ]
+
+  return (
+    <nav className={`bottom-nav ${hidden ? 'nav-hidden' : ''}`}>
+      {navItems.map((item) => {
+        const Icon = item.icon
+        return (
+          <NavLink
+            key={`${item.label}-${item.path}`}
+            to={item.path}
+            className={({ isActive }) => (isActive ? 'active' : undefined)}
+            end={item.end}
+          >
+            <Icon aria-hidden="true" />
+            <span>{item.label}</span>
+          </NavLink>
+        )
+      })}
+    </nav>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="app-shell">
+          <Header />
+          <main className="app-main">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/catalog" element={<Catalog />} />
+              <Route path="/assistant" element={<Assistant />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/benefit/:id" element={<BenefitDetail />} />
+            </Routes>
+          </main>
+          <BottomNav />
+        </div>
+      </Router>
+    </AuthProvider>
+  )
+}
+
+export default App
