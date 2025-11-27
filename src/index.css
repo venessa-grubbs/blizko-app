@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&display=swap');
 
 :root {
-  font-family: 'Onest', 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+  font-family: 'Geologica', 'Onest', 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -11,16 +12,16 @@
   -moz-osx-font-smoothing: grayscale;
 
   color: #2d2b29;
-  background-color: #f6f5f1;
+  background-color: #B3C2E4;
 
-  --bg-base: #f6f5f1;
+  --bg-base: #B3C2E4;
   --bg-card: #ffffff;
   --bg-muted: #d9d9d9;
-  --accent: #faf752;
-  --accent-dark: #f5e842;
+  --accent: #FAF752;
+  --accent-dark: #F5F342;
   --text-primary: #2d2b29;
   --text-secondary: #5a5954;
-  --border: #d9d9d9;
+  --border: rgba(45, 43, 41, 0.15);
   --accent-blue: #b3c2e4;
   --radius-lg: 40px;
   --radius-md: 24px;

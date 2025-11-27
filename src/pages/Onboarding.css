@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@700&display=swap');
+
+.onboarding-page {
+  min-height: 100vh;
+  background: #B3C2E4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  margin: 0;
+  border: none;
+  font-family: 'Geologica', sans-serif;
+}
+
+/* Убираем белый фон и рамки для страницы онбординга */
+body:has(.onboarding-page),
+#root:has(.onboarding-page) {
+  background: #B3C2E4;
+}
+
+.app-main:has(.onboarding-page),
+.app-shell:has(.onboarding-page) {
+  background: #B3C2E4;
+  padding: 0;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.onboarding-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+.onboarding-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+}
+
+.onboarding-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #FAF752;
+  text-align: center;
+  letter-spacing: 0.05em;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.title-o {
+  position: relative;
+  display: inline-block;
+}
+
+.title-o::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  font-size: 0.35em;
+  color: #d9d9d9;
+  line-height: 1;
+  font-weight: 300;
+}
+
+.onboarding-text {
+  text-align: left;
+  color: #2d2b29;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  line-height: 1.5;
+  margin: 0;
+  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
+}
+
+.onboarding-text p {
+  margin: 0;
+}
+
+.onboarding-button {
+  width: 100%;
+  max-width: 300px;
+  padding: 1.2rem 2rem;
+  border-radius: 16px;
+  border: none;
+  background: #FAF752;
+  color: #2d2b29;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: 'Geologica', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1rem;
+}
+
+.onboarding-button:hover {
+  background: #F5F342;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(250, 247, 82, 0.4);
+}
+
+.onboarding-button:active {
+  transform: translateY(0);
+}
+

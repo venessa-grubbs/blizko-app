@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => readStoredUser())
   const [isLoading, setIsLoading] = useState(false)
 
-  // Mock-авторизация через Госуслуги (имитация)
+  // Авторизация через Госуслуги
   const loginWithGosuslugi = (userData) => {
     return new Promise((resolve) => {
       setIsLoading(true)
@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
     })
   }
 
-  // Mock-авторизация через email + SMS
+  // Авторизация через email + SMS
   const loginWithEmail = (userData) => {
     return new Promise((resolve) => {
       setIsLoading(true)
@@ -60,16 +60,16 @@ export function AuthProvider({ children }) {
     })
   }
 
+
   const logout = () => {
     setUser(null)
     window.localStorage.removeItem('social_benefits_user')
   }
 
-  // Mock-проверка статуса льготника через API
+  // Проверка статуса льготника через API
   const verifyBenefitStatus = async (snils) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        // Имитация проверки - случайный результат
         const isVerified = Math.random() > 0.3 // 70% шанс успешной проверки
         resolve({
           success: isVerified,

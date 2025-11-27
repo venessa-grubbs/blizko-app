@@ -20,7 +20,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: linear-gradient(180deg, var(--bg-base) 0%, rgba(246, 245, 241, 0.75) 100%);
+  background: linear-gradient(180deg, var(--bg-base) 0%, rgba(179, 194, 228, 0.75) 100%);
   backdrop-filter: blur(16px);
 }
 
@@ -46,6 +46,13 @@
   display: block;
   font-size: 0.85rem;
   color: var(--text-secondary);
+}
+
+.header-logo {
+  height: 40px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
 }
 
 .icon-button {
@@ -140,7 +147,7 @@
 
 @media (min-width: 768px) {
   .app-shell {
-    background: radial-gradient(circle at top, rgba(255, 232, 113, 0.25), transparent),
+    background: radial-gradient(circle at top, rgba(250, 247, 82, 0.2), transparent),
       var(--bg-base);
   }
 
@@ -329,7 +336,7 @@
 }
 
 .ui-benefit-card {
-  background: #fffef9;
+  background: #ffffff;
   border-radius: var(--radius-md);
   border: 1px solid rgba(0, 0, 0, 0.05);
   padding: 1.2rem;
@@ -368,7 +375,7 @@
   text-align: center;
   border-radius: var(--radius-md);
   border: 1px dashed rgba(45, 43, 41, 0.15);
-  background: #fdfbf2;
+  background: #ffffff;
 }
 
 .two-column {

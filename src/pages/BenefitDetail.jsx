@@ -53,7 +53,15 @@ function BenefitDetail() {
           <h3>📋 Требования</h3>
           <p>{benefit.requirements}</p>
 
-          <h3>👥 Для кого</h3>
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2d2b29" strokeWidth="2" style={{ display: 'inline-block', width: '1.2em', height: '1.2em', verticalAlign: 'middle', marginRight: '0.5rem' }}>
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Для кого
+          </h3>
           <div className="tag-list">
             {benefit.target_groups.map((group) => (
               <span key={group} className="chip">

@@ -33,7 +33,6 @@ function Search() {
         </div>
         <div className="search-meta">
           <span>Результатов: {filteredBenefits.length}</span>
-          <span>Источник: база «Близко»</span>
         </div>
       </section>
 

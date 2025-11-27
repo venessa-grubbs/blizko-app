@@ -18,6 +18,7 @@ const categoryLabels = {
 const regionLabels = {
   '77': 'Москва',
   '78': 'Санкт-Петербург',
+  '14': 'Республика Саха (Якутия)',
   '54': 'Новосибирская область',
   '63': 'Самарская область',
   '52': 'Нижегородская область'
@@ -100,7 +101,7 @@ function Dashboard() {
           {user.isVerified ? (
             <span className="pill pill--success">
               Статус подтвержден
-            </span>
+          </span>
           ) : (
             <a 
               href="https://www.gosuslugi.ru/" 

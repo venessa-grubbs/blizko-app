@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Navigate } from 'react-router-dom'
 import { AuthProvider } from './utils/AuthContext'
 import Header from './components/common/Header'
+import ProtectedRoute from './components/common/ProtectedRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Onboarding from './pages/Onboarding'
 import Dashboard from './pages/Dashboard'
 import Catalog from './pages/Catalog'
 import BenefitDetail from './pages/BenefitDetail'
 import Assistant from './pages/Assistant'
-import Search from './pages/Search'
 import { useAuth } from './utils/useAuth'
 import './App.css'
 
@@ -38,12 +39,6 @@ const IconAssistant = () => (
   </svg>
 )
 
-const IconSearch = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-    <circle cx="11" cy="11" r="6.5" />
-    <path d="m16 16 4.5 4.5" />
-  </svg>
-)
 
 const IconProfile = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
@@ -74,10 +69,9 @@ function BottomNav() {
   }, [])
 
   const navItems = [
-    { path: '/', label: 'Главная', icon: IconHome, end: true },
-    { path: '/catalog', label: 'Каталог', icon: IconGrid },
+    { path: '/home', label: 'Главная', icon: IconHome, end: true },
+    { path: '/catalog', label: 'Поиск', icon: IconGrid },
     { path: '/assistant', label: 'ИИ ассистент', icon: IconAssistant },
-    { path: '/search', label: 'Поиск', icon: IconSearch },
     { path: profilePath, label: 'Профиль', icon: IconProfile }
   ]
 
@@ -101,25 +95,74 @@ function BottomNav() {
   )
 }
 
+function AppContent() {
+  const location = useLocation()
+  const isLoginPage = location.pathname === '/login'
+  const isOnboardingPage = location.pathname === '/onboarding'
+
+  return (
+    <div className="app-shell">
+      {!isLoginPage && !isOnboardingPage && <Header />}
+      <main className="app-main">
+        <Routes>
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={<Navigate to="/onboarding" replace />}
+          />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/catalog"
+            element={
+              <ProtectedRoute>
+                <Catalog />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/assistant"
+            element={
+              <ProtectedRoute>
+                <Assistant />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/benefit/:id"
+            element={
+              <ProtectedRoute>
+                <BenefitDetail />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </main>
+      {!isLoginPage && !isOnboardingPage && <BottomNav />}
+    </div>
+  )
+}
+
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="app-shell">
-          <Header />
-          <main className="app-main">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/catalog" element={<Catalog />} />
-              <Route path="/assistant" element={<Assistant />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/benefit/:id" element={<BenefitDetail />} />
-            </Routes>
-          </main>
-          <BottomNav />
-        </div>
+        <AppContent />
       </Router>
     </AuthProvider>
   )

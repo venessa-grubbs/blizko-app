@@ -1,47 +1,72 @@
 import React, { useState } from 'react'
+import { sendMessageToAI } from '../utils/aiAssistant'
 import './Assistant.css'
 
 const starterMessages = [
   {
     role: 'assistant',
-    text: 'Здравствуйте! Я прототип «ИИ-ассистента». Расскажите, что хотите найти?'
-  },
-  {
-    role: 'user',
-    text: 'Например, скидки на лекарства для пенсионеров'
-  },
-  {
-    role: 'assistant',
-    text: 'Я могу подсказать актуальные льготы и подготовить заявку. Задайте конкретный вопрос.'
+    text: 'Здравствуйте! Я ИИ-ассистент. Помогу найти подходящие льготы и социальные программы. Что вас интересует?'
   }
 ]
 
 function Assistant() {
   const [messages, setMessages] = useState(starterMessages)
   const [draft, setDraft] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    if (!draft.trim()) return
-    setMessages((prev) => [...prev, { role: 'user', text: draft.trim() }])
+    if (!draft.trim() || isLoading) return
+
+    const userMessage = draft.trim()
+    
+    // Сохраняем текущую историю для контекста
+    const currentHistory = messages.map(msg => ({
+      role: msg.role,
+      text: msg.text
+    }))
+    
+    // Добавляем сообщение пользователя
+    const updatedMessages = [...messages, { role: 'user', text: userMessage }]
+    setMessages(updatedMessages)
     setDraft('')
-    setTimeout(() => {
+    setIsLoading(true)
+
+    try {
+      // Формируем историю с новым сообщением пользователя
+      const conversationHistory = [...currentHistory, { role: 'user', text: userMessage }]
+
+      // Отправляем запрос к ИИ-агенту
+      const aiResponse = await sendMessageToAI(userMessage, conversationHistory)
+      
+      // Добавляем ответ ассистента
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          text: 'Спасибо! В реальной версии здесь был бы ответ модели. Сейчас это только макет.'
+          text: aiResponse
         }
       ])
-    }, 400)
+    } catch (error) {
+      console.error('Ошибка при получении ответа от ИИ:', error)
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          text: 'Извините, произошла ошибка при обработке вашего запроса. Попробуйте еще раз или обратитесь в поддержку.'
+        }
+      ])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className="page assistant-page">
       <section className="page-card assistant-hero">
         <div className="pill pill--highlight">ИИ-ассистент</div>
-        <h1>Mock чат</h1>
-        <p>Макет для демонстрации — интеграция с моделью будет подключена позже.</p>
+        <h1>Чат с ИИ-ассистентом</h1>
+        <p>Задайте вопрос о льготах, субсидиях или социальных программах. Я помогу найти подходящие варианты.</p>
       </section>
 
       <section className="page-card assistant-chat">
@@ -58,9 +83,17 @@ function Assistant() {
             placeholder="Напишите, что ищете: «льготы на ЖКХ», «соцкарта»..."
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
+            disabled={isLoading}
           />
-          <button type="submit">Отправить</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Отправка...' : 'Отправить'}
+          </button>
         </form>
+        {isLoading && (
+          <div className="chat-loading">
+            <span>ИИ-ассистент печатает...</span>
+          </div>
+        )}
       </section>
     </div>
   )

@@ -59,6 +59,11 @@
   background: #fff;
 }
 
+.chat-input input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .chat-input button {
   border: none;
   border-radius: var(--radius-sm);
@@ -66,5 +71,20 @@
   font-weight: 600;
   background: var(--text-primary);
   color: #fff;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.chat-input button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chat-loading {
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
 }
 

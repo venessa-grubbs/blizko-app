@@ -4,8 +4,6 @@ import { useAuth } from '../../utils/useAuth'
 
 const pageTitles = {
   '/': 'Главная',
-  '/catalog': 'Каталог льгот',
-  '/dashboard': 'Личный кабинет',
   '/login': 'Войти',
   '/benefit': 'Льгота'
 }
@@ -17,12 +15,12 @@ function Header() {
 
   const currentTitle =
     pageTitles[location.pathname] ||
-    (location.pathname.startsWith('/benefit') ? pageTitles['/benefit'] : 'Близко')
+    (location.pathname.startsWith('/benefit') ? pageTitles['/benefit'] : null)
 
   const subtitle =
     location.pathname === '/'
       ? 'Все социальные льготы рядом'
-      : 'Прототип сервиса «Близко»'
+      : null
 
   const handleBack = () => {
     if (location.pathname !== '/') {
@@ -47,8 +45,14 @@ function Header() {
       </div>
 
       <div className="header-center">
-        <span className="header-title">{currentTitle}</span>
-        <span className="header-subtitle">{subtitle}</span>
+        {currentTitle ? (
+          <>
+            <span className="header-title">{currentTitle}</span>
+            {subtitle && <span className="header-subtitle">{subtitle}</span>}
+          </>
+        ) : (
+          <img src="/ruslogo.png" alt="БЛИЗКО" className="header-logo" />
+        )}
       </div>
 
       <div className="header-right">
