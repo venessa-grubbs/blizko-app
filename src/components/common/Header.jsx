@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../utils/useAuth'
+import { useAccessibility } from '../../utils/AccessibilityContext'
 
 const pageTitles = {
   '/': 'Главная',
@@ -10,6 +11,7 @@ const pageTitles = {
 
 function Header() {
   const { user } = useAuth()
+  const { isLowVisionMode, toggleLowVisionMode } = useAccessibility()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -56,6 +58,18 @@ function Header() {
       </div>
 
       <div className="header-right">
+        <button 
+          type="button" 
+          className="icon-button accessibility-toggle" 
+          aria-label={isLowVisionMode ? 'Отключить версию для слабовидящих' : 'Включить версию для слабовидящих'}
+          onClick={toggleLowVisionMode}
+          title={isLowVisionMode ? 'Отключить версию для слабовидящих' : 'Включить версию для слабовидящих'}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24" />
+          </svg>
+        </button>
         <button type="button" className="icon-button" aria-label="Открыть уведомления">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
             <path d="M19 17H5l1.5-2.5V10a5.5 5.5 0 0 1 11 0v4.5z" strokeLinecap="round" />

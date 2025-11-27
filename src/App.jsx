@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Navigate } from 'react-router-dom'
 import { AuthProvider } from './utils/AuthContext'
+import { AccessibilityProvider } from './utils/AccessibilityContext'
 import Header from './components/common/Header'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import Home from './pages/Home'
@@ -161,9 +162,11 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <AccessibilityProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AccessibilityProvider>
     </AuthProvider>
   )
 }

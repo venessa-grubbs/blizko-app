@@ -82,6 +82,14 @@
   transform: translateY(-1px);
 }
 
+.icon-button.accessibility-toggle {
+  border-color: var(--accent);
+}
+
+.icon-button.accessibility-toggle:active {
+  background: var(--accent);
+}
+
 .avatar-chip {
   width: 38px;
   height: 38px;

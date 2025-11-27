@@ -28,6 +28,192 @@
   --radius-sm: 14px;
 }
 
+/* Версия для слабовидящих */
+.low-vision-mode {
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --border: rgba(0, 0, 0, 0.3);
+}
+
+.low-vision-mode * {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  hyphens: auto !important;
+}
+
+.low-vision-mode h1,
+.low-vision-mode .header-title {
+  font-size: clamp(2.2rem, 6vw, 3rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.4 !important;
+  word-wrap: break-word !important;
+}
+
+.low-vision-mode h2 {
+  font-size: clamp(1.8rem, 5vw, 2.5rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.4 !important;
+  word-wrap: break-word !important;
+}
+
+.low-vision-mode h3 {
+  font-size: clamp(1.6rem, 4.5vw, 2.2rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.5 !important;
+  word-wrap: break-word !important;
+}
+
+.low-vision-mode h4 {
+  font-size: clamp(1.4rem, 4vw, 1.8rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.5 !important;
+  word-wrap: break-word !important;
+}
+
+.low-vision-mode p,
+.low-vision-mode span,
+.low-vision-mode div,
+.low-vision-mode a {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.7 !important;
+  word-wrap: break-word !important;
+}
+
+.low-vision-mode button {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  text-align: center !important;
+}
+
+.low-vision-mode input,
+.low-vision-mode select,
+.low-vision-mode textarea {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.6 !important;
+}
+
+.low-vision-mode button,
+.low-vision-mode .icon-button,
+.low-vision-mode .avatar-chip {
+  min-width: 70px !important;
+  min-height: 70px !important;
+  padding: 1.2rem !important;
+  border-width: 4px !important;
+}
+
+.low-vision-mode .bottom-nav a {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem) !important;
+  padding: 1.2rem 0.75rem !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+
+.low-vision-mode .bottom-nav svg {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.low-vision-mode .page-card,
+.low-vision-mode .ui-benefit-card,
+.low-vision-mode .benefit-card {
+  border-width: 4px !important;
+  border-color: #000000 !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+  padding: clamp(2rem, 5vw, 3rem) !important;
+}
+
+.low-vision-mode .login-input,
+.low-vision-mode input,
+.low-vision-mode select,
+.low-vision-mode textarea {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem) !important;
+  padding: 1.5rem 2rem !important;
+  border-width: 4px !important;
+  border-color: #000000 !important;
+}
+
+.low-vision-mode .login-button,
+.low-vision-mode .primary-button,
+.low-vision-mode .banner-button {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem) !important;
+  padding: 1.5rem 2.5rem !important;
+  border-width: 4px !important;
+  border-color: #000000 !important;
+  font-weight: 900 !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+
+.low-vision-mode .icon-button svg {
+  width: 28px !important;
+  height: 28px !important;
+  stroke-width: 3px !important;
+}
+
+.low-vision-mode .benefit-card-text p {
+  font-size: clamp(1.2rem, 3vw, 1.5rem) !important;
+  line-height: 1.6 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  hyphens: auto !important;
+}
+
+.low-vision-mode .ui-benefit-card h4 {
+  font-size: clamp(1.4rem, 4vw, 1.8rem) !important;
+  line-height: 1.5 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.low-vision-mode .ui-benefit-card p {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem) !important;
+  line-height: 1.7 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.low-vision-mode .page-card,
+.low-vision-mode .ui-benefit-card,
+.low-vision-mode .benefit-card,
+.low-vision-mode .home-hero,
+.low-vision-mode .home-banner {
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.low-vision-mode .benefits-grid {
+  gap: 1.5rem !important;
+}
+
+.low-vision-mode .benefit-card-text {
+  padding: 1rem !important;
+  min-height: auto !important;
+}
+
+.low-vision-mode .header-title,
+.low-vision-mode .header-subtitle {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+.low-vision-mode .chip,
+.low-vision-mode .pill {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem) !important;
+  padding: 0.7rem 1.3rem !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  display: inline-block !important;
+  max-width: 100% !important;
+  border-width: 2px !important;
+}
+
 *,
 *::before,
 *::after {
