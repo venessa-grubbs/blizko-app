@@ -4,6 +4,9 @@ import benefitsData from '../data/benefits.json'
 import './Home.css'
 
 // Импортируем картинки для акций и партнеров
+import skintime from '../Skintime.png'
+import camelek from '../camelek.jpeg'
+import mahtal from '../mahtal.jpeg'
 import childrenWorld from '../children_world.jpeg'
 import eapteka from '../eapteka.jpeg'
 import foodMarket from '../foodmareket.jpeg'
@@ -36,9 +39,9 @@ const sections = [
     id: 'partners',
     title: 'Акции и скидки от партнеров',
     viewAll: true,
-    cards: 3,
+    cards: 6,
     variant: 'square',
-    images: [childrenWorld, eapteka, foodMarket],
+    images: [skintime, camelek, mahtal, childrenWorld, eapteka, foodMarket],
     benefits: []
   },
   {
